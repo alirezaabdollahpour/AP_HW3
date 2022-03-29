@@ -5,12 +5,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 class BST {
 public:
     class Node {
     public:
         Node(int value, Node* left, Node* right);
-        Node(); // copy constructor
+        Node() = default; // copy constructor
         Node(const Node& node);
 
         int value;
