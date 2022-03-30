@@ -13,3 +13,7 @@ BST::Node::Node(const Node& node) // copy Node constructor
     right = node.right;
     left = node.left;
 }
+BST::Node*& BST::get_root()
+{
+    return root;
+}
