@@ -1,6 +1,7 @@
 #ifndef BST_H
 #define BST_H
 
+#include <compare>
 #include <functional>
 #include <iostream>
 #include <string>
@@ -11,8 +12,9 @@ public:
     class Node {
     public:
         Node(int value, Node* left, Node* right);
-        Node() = default; // copy constructor
-        Node(const Node& node);
+        Node() = default; // default constructor
+        Node(const Node& node); // copy constructor
+        std::partial_ordering operator<=>(int _N) const { return value <=> _N; }
 
         int value;
         Node* left;
