@@ -14,11 +14,11 @@ public:
         Node(int value, Node* left, Node* right);
         Node() = default; // default constructor
         Node(const Node& node); // copy constructor
-        std::partial_ordering operator<=>(int _N) const { return value <=> _N; }
-        bool operator==(int N) const { return value == N; }
-        friend std::ostream& operator<<(std::ostream& os, const Node& node)
+        std::partial_ordering operator<=>(int _N) const { return this->value <=> _N; }
+        bool operator==(int N) const { return this->value == N; }
+        friend std::ostream& operator<<(std::ostream& os, const BST::Node& node)
         {
-            os << "node address is:" << &node << "node left chiled value:" << node.left << "node right chiled value" << node.right << std::endl;
+            os << "node address is:" << &node << "node left chiled value:" << node.left << "node right chiled value" << node.right;
             return os;
         }
 
