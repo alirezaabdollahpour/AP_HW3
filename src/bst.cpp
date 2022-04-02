@@ -129,3 +129,15 @@ size_t BST::length()
     this->bfs([&](BST::Node*& node) { count++; });
     return count;
 }
+std::ostream& operator<<(std::ostream& os, BST& B)
+{
+    os << std::string(100, '*') << std::endl;
+    size_t counter { 0 };
+    B.bfs([&](BST::Node*& node) {
+        counter++;
+        os << *node;
+    });
+    os << "Binary Search tree size: " << counter << std::endl;
+    os << std::string(100, '*') << std::endl;
+    return os;
+}
