@@ -141,3 +141,34 @@ std::ostream& operator<<(std::ostream& os, BST& B)
     os << std::string(100, '*') << std::endl;
     return os;
 }
+
+BST& BST::operator++()
+{
+    std::cout << "prefix ++ operator->++v" << std::endl;
+    bfs([&](BST::Node*& node) { node->value++; });
+    return *this;
+}
+
+BST BST::operator++(int)
+{
+    std::cout << "postfix ++ operator ->v++" << std::endl;
+    // copy input BST to another bst
+    BST bst { *this };
+    ++(*this);
+    return bst;
+}
+
+// BST::BST(BST& bst)
+//     : root { nullptr }
+// {
+//     std::vector<int> values;
+//     bst.bfs([&](BST::Node* node) { this->add_node(node->value); });
+// }
+
+// BST::~BST()
+// {
+//     std::vector<Node*> nodes;
+//     bfs([&nodes](BST::Node*& node) { nodes.push_back(node); });
+//     for (auto& node : nodes)
+//         delete node;
+// }
