@@ -20,8 +20,10 @@ BST::Node*& BST::get_root()
 void BST::bfs(std::function<void(Node*& node)> func)
 {
     std::queue<Node*> bfs_queue;
-    if (root == nullptr)
+    if (root == nullptr) {
         std::cout << "your BST is empty and bfs can't run!" << std::endl;
+        return;
+    }
     bfs_queue.push(root);
 
     while (!bfs_queue.empty()) {
@@ -38,64 +40,83 @@ void BST::bfs(std::function<void(Node*& node)> func)
 
 bool BST::add_node(int value)
 {
-    if (get_root() == nullptr) {
-        root = new Node;
-        root->value = value;
-        root->right = nullptr;
-        root->left = nullptr;
-        return 1;
+    BST::Node* newNode { new BST::Node(value, nullptr, nullptr) };
+    BST::Node* child { new BST::Node() };
+    child = root;
+    BST::Node* parent { new BST::Node() };
+    if (root == nullptr) {
+        root = newNode;
+        return true;
     }
-    BST::Node* pntr { root };
-    while (1) {
-        if (value > pntr->value) {
-            if (pntr->right == nullptr) {
-                pntr->right = new Node;
-                pntr = pntr->right;
-
-                pntr->value = value;
-                std::cout << *(pntr) << std::endl;
-                return 1;
-            } else {
-                pntr = pntr->right;
-            }
+    while (child != nullptr) {
+        parent = child;
+        if (value > child->value) {
+            child = child->right;
+        } else if (value < child->value) {
+            child = child->left;
         } else {
-            if (value == pntr->value)
-                return 0;
-            if (pntr->left == nullptr) {
-                pntr->left = new Node;
-                pntr = pntr->left;
-
-                pntr->value = value;
-                std::cout << *(pntr) << std::endl;
-                return 1;
-            } else {
-                pntr = pntr->left;
-            }
+            return false;
         }
     }
+    if (parent->left == nullptr && parent->value > value) {
+        parent->left = newNode;
+        return true;
+    } else if (parent->right == nullptr && parent->value < value) {
+        parent->right = newNode;
+        return true;
+    }
+    return false;
 }
+
+// BST::Node** BST::find_node(int value)
+// {
+//     BST::Node** finder { new BST::Node* };
+//     *finder = root;
+//     if (*finder == nullptr) {
+
+//         std::cout << "BST is empty" << std::endl;
+//         return nullptr;
+//     }
+//     while (1) {
+//         if (*finder = nullptr) {
+//             std::cout << "value doesn't exist" << std::endl;
+//             return nullptr;
+//         }
+//         if ((*finder)->value > value)
+//             *finder = (*finder)->left;
+//         if ((*finder)->value < value)
+//             *finder = (*finder)->right;
+//         if ((*finder)->value == value)
+//             return finder;
+//     }
+// }
 
 BST::Node** BST::find_node(int value)
 {
-    BST::Node** finder { new BST::Node* };
-    *finder = root;
-    if (*finder == nullptr) {
-
-        std::cout << "BST is empty" << std::endl;
+    if (root == nullptr) {
         return nullptr;
     }
-    while (1) {
-        if (*finder = nullptr) {
-            std::cout << "value doesn't exist" << std::endl;
+    std::queue<Node**> finder;
+    finder.push(&root);
+    Node** node = finder.back();
+    while (true) {
+        if ((*node)->value == value)
+            break;
+        else if ((*node)->left != nullptr
+            && value < (*node)->value) {
+            finder.push(&((*node)->left));
+            finder.pop();
+            node = finder.back();
+        } else if ((*node)->right != nullptr
+            && value > (*node)->value) {
+            finder.push(&((*node)->right));
+            finder.pop();
+            node = finder.back();
+        } else {
             return nullptr;
         }
-        if (*finder != nullptr && (*finder)->value > value)
-            *finder = (*finder)->left;
-        if (*finder != nullptr && (*finder)->value < value)
-            *finder = (*finder)->right;
-        if (*finder != nullptr && (*finder)->value == value)
-            return finder;
     }
+    return node;
 }
 
 BST::Node** BST::find_parrent(int value)
@@ -158,17 +179,44 @@ BST BST::operator++(int)
     return bst;
 }
 
-// BST::BST(BST& bst)
-//     : root { nullptr }
-// {
-//     std::vector<int> values;
-//     bst.bfs([&](BST::Node* node) { this->add_node(node->value); });
-// }
+BST& BST::operator=(BST& bst)
+{
+    if (this == &bst)
+        return *this;
+    delete this->root;
+    std::vector<int> finder;
+    bst.bfs([&finder](BST::Node*& node) { finder.push_back(node->value); });
+    for (auto i = (finder.begin()); i != finder.end(); ++i)
+        this->add_node(*i);
+    return *this;
+}
 
-// BST::~BST()
-// {
-//     std::vector<Node*> nodes;
-//     bfs([&nodes](BST::Node*& node) { nodes.push_back(node); });
-//     for (auto& node : nodes)
-//         delete node;
-// }
+BST& BST::operator=(BST&& bst)
+{
+    if (this == &bst)
+        return *this;
+    delete root;
+    root = bst.root;
+    bst.root = nullptr;
+    return *this;
+}
+
+BST::BST(BST& bst)
+    : root { nullptr }
+{
+    bst.bfs([&](BST::Node*& node) { this->add_node(node->value); });
+}
+
+BST::BST(BST&& bst)
+{
+    root = bst.get_root();
+    bst.root = nullptr;
+}
+
+BST::~BST()
+{
+    std::vector<Node*> nodes;
+    bfs([&nodes](BST::Node*& node) { nodes.push_back(node); });
+    for (auto& node : nodes)
+        delete node;
+}
