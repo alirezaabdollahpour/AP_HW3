@@ -4,6 +4,7 @@
 #include <compare>
 #include <functional>
 #include <iostream>
+#include <queue>
 #include <string>
 #include <vector>
 
