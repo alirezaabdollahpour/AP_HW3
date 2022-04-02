@@ -68,29 +68,6 @@ bool BST::add_node(int value)
     return false;
 }
 
-// BST::Node** BST::find_node(int value)
-// {
-//     BST::Node** finder { new BST::Node* };
-//     *finder = root;
-//     if (*finder == nullptr) {
-
-//         std::cout << "BST is empty" << std::endl;
-//         return nullptr;
-//     }
-//     while (1) {
-//         if (*finder = nullptr) {
-//             std::cout << "value doesn't exist" << std::endl;
-//             return nullptr;
-//         }
-//         if ((*finder)->value > value)
-//             *finder = (*finder)->left;
-//         if ((*finder)->value < value)
-//             *finder = (*finder)->right;
-//         if ((*finder)->value == value)
-//             return finder;
-//     }
-// }
-
 BST::Node** BST::find_node(int value)
 {
     if (root == nullptr) {
