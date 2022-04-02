@@ -17,6 +17,24 @@ BST::Node*& BST::get_root()
 {
     return root;
 }
+void BST::bfs(std::function<void(Node*& node)> func)
+{
+    std::queue<Node*> bfs_queue;
+    if (root == nullptr)
+        std::cout << "your BST is empty and bfs can't run!" << std::endl;
+    bfs_queue.push(root);
+
+    while (!bfs_queue.empty()) {
+        Node* node = bfs_queue.front();
+        bfs_queue.pop();
+        if (node->left != nullptr)
+            bfs_queue.push(node->left);
+        if (node->right != nullptr)
+            bfs_queue.push(node->right);
+
+        func(node);
+    }
+}
 
 bool BST::add_node(int value)
 {
@@ -57,27 +75,6 @@ bool BST::add_node(int value)
     }
 }
 
-BST::Node** BST::find_parrent(int value)
-{
-    BST::Node** finder { new BST::Node* };
-    *finder = root;
-    if (*finder == nullptr)
-        std::cout << "BST is empty" << std::endl;
-    while (1) {
-        if (*finder == nullptr)
-            std::cout << "BST doesn't have this value" << std::endl;
-        if (*finder != nullptr && (*finder)->value > value)
-            if (*finder != nullptr && (*finder)->left->value == value)
-                return finder;
-            else
-                *finder = (*finder)->left;
-        if (*finder != nullptr && (*finder)->value < value)
-            if (*finder != nullptr && (*finder)->right->value == value)
-                return finder;
-            else
-                *finder = (*finder)->right;
-    }
-}
 BST::Node** BST::find_node(int value)
 {
     BST::Node** finder { new BST::Node* };
@@ -92,11 +89,43 @@ BST::Node** BST::find_node(int value)
             std::cout << "value doesn't exist" << std::endl;
             return nullptr;
         }
+        if (*finder != nullptr && (*finder)->value > value)
+            *finder = (*finder)->left;
+        if (*finder != nullptr && (*finder)->value < value)
+            *finder = (*finder)->right;
         if (*finder != nullptr && (*finder)->value == value)
             return finder;
-        if (*finder != nullptr && (*finder)->left->value > value)
-            *finder = (*finder)->left;
-        if (*finder != nullptr && (*finder)->right->value < value)
-            *finder = (*finder)->right;
     }
+}
+
+BST::Node** BST::find_parrent(int value)
+{
+    BST::Node** finder { new BST::Node* };
+    *finder = root;
+    if (*finder == nullptr)
+        std::cout << "BST is empty" << std::endl;
+    while (1) {
+        if (*finder == nullptr) {
+            std::cout << "BST doesn't have this value" << std::endl;
+            return nullptr;
+        }
+
+        if (*finder != nullptr && (*finder)->value > value)
+            if (*finder != nullptr && (*finder)->left->value == value)
+                return finder;
+            else
+                *finder = (*finder)->left;
+        if (*finder != nullptr && (*finder)->value < value)
+            if (*finder != nullptr && (*finder)->right->value == value)
+                return finder;
+            else
+                *finder = (*finder)->right;
+    }
+}
+
+size_t BST::length()
+{
+    size_t count {};
+    this->bfs([&](BST::Node*& node) { count++; });
+    return count;
 }
