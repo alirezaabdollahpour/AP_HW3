@@ -197,3 +197,22 @@ BST::~BST()
     for (auto& node : nodes)
         delete node;
 }
+
+BST::Node** BST::find_successor(int value)
+{
+    BST::Node** finder { new BST::Node* };
+    *finder = *this->find_node(value);
+    if (*finder == nullptr)
+        return nullptr;
+    if ((*finder)->left == nullptr)
+        return finder;
+    else if ((*finder)->left->right == nullptr) {
+        *finder = (*finder)->left;
+        return finder;
+    } else
+        (*finder) = (*finder)->left;
+    while ((*finder)->right != nullptr)
+        (*finder) = (*finder)->right;
+
+    return finder;
+}
