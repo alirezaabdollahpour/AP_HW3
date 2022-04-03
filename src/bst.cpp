@@ -216,3 +216,30 @@ BST::Node** BST::find_successor(int value)
 
     return finder;
 }
+
+bool BST::delete_node(int value)
+{
+    if (this->find_node(value) == nullptr)
+        return false;
+    else {
+        Node** node = this->find_node(value);
+        if ((*node)->left == nullptr && (*node)->right == nullptr) {
+            delete (*node);
+            (*node) = nullptr;
+            return true;
+        } else if ((*node)->left == nullptr) {
+            (*node) = (*node)->right;
+            return true;
+        } else if ((*node)->right == nullptr) {
+            (*node) = (*node)->left;
+            return true;
+        } else {
+            Node** finder = this->find_successor(value);
+            (*node)->value = (*finder)->value;
+            delete (*finder);
+            (*finder) = nullptr;
+        }
+    }
+
+    return true;
+}
