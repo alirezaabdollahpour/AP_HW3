@@ -256,3 +256,11 @@ bool BST::delete_node(int value)
 
     return true;
 }
+
+BST::BST(std::initializer_list<int> nodes)
+    : root { nullptr }
+{
+    for (int i : nodes) {
+        this->add_node(i);
+    }
+}

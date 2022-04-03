@@ -45,6 +45,7 @@ public:
     BST operator++(int);
     BST& operator=(BST& bst);
     BST& operator=(BST&& bst);
+    BST(std::initializer_list<int> nodes);
 
 private:
     Node* root;
