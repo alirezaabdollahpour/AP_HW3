@@ -3,6 +3,7 @@
 
 #include <compare>
 #include <functional>
+#include <initializer_list>
 #include <iostream>
 #include <queue>
 #include <string>
@@ -13,7 +14,7 @@ public:
     class Node {
     public:
         Node(int value, Node* left, Node* right);
-        Node() = default; // default constructor
+        Node(); // default constructor
         Node(const Node& node); // copy constructor
         std::partial_ordering operator<=>(int _N) const { return this->value <=> _N; }
         bool operator==(int N) const { return this->value == N; }
@@ -28,6 +29,10 @@ public:
         Node* right;
     };
     Node*& get_root();
+    ~BST();
+    BST(BST& bst);
+    BST(BST&& bst);
+    BST();
     void bfs(std::function<void(Node*& node)> func);
     size_t length();
     bool add_node(int value);
@@ -37,12 +42,12 @@ public:
     bool delete_node(int value);
     friend std::ostream& operator<<(std::ostream& os, BST& B);
     BST& operator++();
-    BST operator++(int)
+    BST operator++(int);
+    BST& operator=(BST& bst);
+    BST& operator=(BST&& bst);
 
-        // BST(BST& bst);
-        // ~BST();
-
-        private : Node* root;
+private:
+    Node* root;
 };
 
 #endif // BST_H
