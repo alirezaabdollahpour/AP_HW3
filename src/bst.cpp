@@ -17,6 +17,17 @@ BST::Node*& BST::get_root()
 {
     return root;
 }
+BST::Node::Node()
+    : value { 0 }
+{
+    right = nullptr;
+
+    left = nullptr;
+}
+BST::BST()
+{
+    root = nullptr;
+}
 void BST::bfs(std::function<void(Node*& node)> func)
 {
     std::queue<Node*> bfs_queue;
@@ -100,6 +111,7 @@ BST::Node** BST::find_parrent(int value)
 {
     BST::Node** finder { new BST::Node* };
     *finder = root;
+    // finder = &root; -> &root->**
     if (*finder == nullptr)
         std::cout << "BST is empty" << std::endl;
     while (1) {
@@ -201,18 +213,19 @@ BST::~BST()
 BST::Node** BST::find_successor(int value)
 {
     BST::Node** finder { new BST::Node* };
-    *finder = *this->find_node(value);
+    finder = this->find_node(value);
     if (*finder == nullptr)
         return nullptr;
     if ((*finder)->left == nullptr)
         return finder;
     else if ((*finder)->left->right == nullptr) {
-        *finder = (*finder)->left;
+        //*finder = (*finder)->left;
+        finder = &((*finder)->left);
         return finder;
     } else
-        (*finder) = (*finder)->left;
+        finder = &((*finder)->left);
     while ((*finder)->right != nullptr)
-        (*finder) = (*finder)->right;
+        finder = &((*finder)->right);
 
     return finder;
 }
