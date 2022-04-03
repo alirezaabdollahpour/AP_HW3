@@ -355,7 +355,7 @@ TEST(HW3Test, TEST21)
     EXPECT_EQ(*bst.find_node(60), address_of_60);
     EXPECT_EQ(*bst.find_node(75), address_of_75);
 }
-/*
+
 TEST(HW3Test, TEST22)
 {
     BST bst {};
@@ -374,6 +374,7 @@ TEST(HW3Test, TEST22)
 
     EXPECT_EQ(bst.length(), 12);
     EXPECT_TRUE(bst.delete_node(10)); // both children exist
+    std::cout << "ramazan mobarak" << std::endl;
     EXPECT_EQ(bst.length(), 11);
     EXPECT_EQ(bst.get_root()->left->value, 7);
     EXPECT_EQ(bst.get_root()->left->left->right, nullptr);
@@ -482,7 +483,7 @@ TEST(HW3Test, TEST28)
     EXPECT_EQ(adddress_of_root, move.get_root());
     EXPECT_EQ(test_value, move.get_root()->left->right->value);
 }
-
+/*
 TEST(HW3Test, TEST29) {
     BST bst1{5, 1, 10, 2, 8, 50, 4, 60};
     BST bst2{3, 2, 100, 20, 8, 50, 4, 60, 44, 23};
